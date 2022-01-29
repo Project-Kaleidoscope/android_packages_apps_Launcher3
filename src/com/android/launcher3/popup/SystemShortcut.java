@@ -7,6 +7,7 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.view.View;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ImageView;
@@ -140,6 +141,30 @@ public abstract class SystemShortcut<T extends BaseDraggingActivity> extends Ite
             widgetsBottomSheet.populateAndShow(mItemInfo);
             mTarget.getStatsLogManager().logger().withItemInfo(mItemInfo)
                     .log(LAUNCHER_SYSTEM_SHORTCUT_WIDGETS_TAP);
+        }
+    }
+
+    public static final Factory<Launcher> UNINSTALL = (activity, itemInfo) -> {
+        if (itemInfo.getTargetComponent() == null) return null;
+        Intent intent = new Intent().setComponent(itemInfo.getTargetComponent());
+        if (PackageManagerHelper.isSystemApp(activity, intent)) {
+            return null;
+        }
+        return new Uninstall(activity, itemInfo);
+    };
+
+    public static class Uninstall extends SystemShortcut {
+
+        public Uninstall(BaseDraggingActivity target, ItemInfo itemInfo) {
+            super(R.drawable.kscope_shortcut_uninstall_ic, R.string.kscope_shortcut_uninstall_title, target, itemInfo);
+        }
+
+        @Override
+        public void onClick(View view) {
+            dismissTaskMenuView(mTarget);
+            Uri uri = Uri.fromParts("package", mItemInfo.getTargetComponent().getPackageName(), null);
+            Intent intent = new Intent(Intent.ACTION_DELETE, uri);
+            mTarget.startActivitySafely(view, intent, mItemInfo);
         }
     }
 

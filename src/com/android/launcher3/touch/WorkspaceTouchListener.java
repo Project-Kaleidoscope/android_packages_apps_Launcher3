@@ -15,6 +15,7 @@
  */
 package com.android.launcher3.touch;
 
+import static android.provider.Settings.Secure.DOUBLE_TAP_SLEEP_GESTURE;
 import static android.view.MotionEvent.ACTION_CANCEL;
 import static android.view.MotionEvent.ACTION_DOWN;
 import static android.view.MotionEvent.ACTION_MOVE;
@@ -24,10 +25,12 @@ import static android.view.MotionEvent.ACTION_UP;
 import static com.android.launcher3.LauncherState.NORMAL;
 import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_WORKSPACE_LONGPRESS;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.view.GestureDetector;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
@@ -74,6 +77,8 @@ public class WorkspaceTouchListener extends GestureDetector.SimpleOnGestureListe
 
     private final GestureDetector mGestureDetector;
 
+    private final ContentResolver mContentResolver;
+
     public WorkspaceTouchListener(Launcher launcher, Workspace workspace) {
         mLauncher = launcher;
         mWorkspace = workspace;
@@ -82,6 +87,7 @@ public class WorkspaceTouchListener extends GestureDetector.SimpleOnGestureListe
         mTouchSlop = 2 * ViewConfiguration.get(launcher).getScaledTouchSlop();
         mPm = (PowerManager) workspace.getContext().getSystemService(Context.POWER_SERVICE);
         mGestureDetector = new GestureDetector(workspace.getContext(), this);
+        mContentResolver = workspace.getContext().getContentResolver();
     }
 
     @Override
@@ -189,7 +195,8 @@ public class WorkspaceTouchListener extends GestureDetector.SimpleOnGestureListe
 
     @Override
     public boolean onDoubleTap(MotionEvent event) {
-        mPm.goToSleep(event.getEventTime());
+        if (Settings.Secure.getInt(mContentResolver, DOUBLE_TAP_SLEEP_GESTURE, 0) == 1)
+            mPm.goToSleep(event.getEventTime());
         return true;
     }
 }

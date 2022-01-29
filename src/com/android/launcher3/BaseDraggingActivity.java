@@ -206,12 +206,15 @@ public abstract class BaseDraggingActivity extends BaseActivity
                     && (item.itemType == Favorites.ITEM_TYPE_SHORTCUT
                     || item.itemType == Favorites.ITEM_TYPE_DEEP_SHORTCUT)
                     && !((WorkspaceItemInfo) item).isPromise();
+            boolean isReadyToUninstall = intent.getAction().equals(Intent.ACTION_DELETE);
             if (isShortcut) {
                 // Shortcuts need some special checks due to legacy reasons.
                 startShortcutIntentSafely(intent, optsBundle, item);
             } else if (user == null || user.equals(Process.myUserHandle())) {
                 // Could be launching some bookkeeping activity
                 startActivity(intent, optsBundle);
+            } else if (isReadyToUninstall) {
+                startActivity(intent);
             } else {
                 getSystemService(LauncherApps.class).startMainActivity(
                         intent.getComponent(), user, intent.getSourceBounds(), optsBundle);

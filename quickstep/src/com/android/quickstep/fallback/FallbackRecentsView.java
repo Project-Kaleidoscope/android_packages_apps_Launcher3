@@ -37,6 +37,7 @@ import com.android.launcher3.testing.TestProtocol;
 import com.android.quickstep.FallbackActivityInterface;
 import com.android.quickstep.GestureState;
 import com.android.quickstep.RecentsActivity;
+import com.android.quickstep.views.MidClearAllButton;
 import com.android.quickstep.views.OverviewActionsView;
 import com.android.quickstep.views.RecentsView;
 import com.android.quickstep.views.SplitPlaceholderView;
@@ -62,8 +63,9 @@ public class FallbackRecentsView extends RecentsView<RecentsActivity, RecentsSta
     }
 
     @Override
-    public void init(OverviewActionsView actionsView, SplitPlaceholderView splitPlaceholderView) {
-        super.init(actionsView, splitPlaceholderView);
+    public void init(OverviewActionsView actionsView, SplitPlaceholderView splitPlaceholderView,
+                        MidClearAllButton midClearAllButton) {
+        super.init(actionsView, splitPlaceholderView, midClearAllButton);
         setOverviewStateEnabled(true);
         setOverlayEnabled(true);
     }

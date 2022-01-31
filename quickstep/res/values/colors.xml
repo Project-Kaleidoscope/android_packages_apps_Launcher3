@@ -28,4 +28,9 @@
     <!-- Taskbar -->
     <color name="taskbar_background">#101010</color>
     <color name="taskbar_icon_selection_ripple">#E0E0E0</color>
+
+    <!-- Mid clear all button -->
+    <color name="mid_clear_all_background_color">#FFFFFF</color>
+    <color name="mid_clear_all_foreground_color">#000000</color>
+    <color name="mid_clear_all_ripple_color">#D0D0D0</color>
 </resources>

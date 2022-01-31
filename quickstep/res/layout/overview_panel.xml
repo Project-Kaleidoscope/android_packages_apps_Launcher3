@@ -25,6 +25,9 @@
         android:clipToPadding="false"
         android:visibility="invisible" />
 
+    <include
+        layout="@layout/mid_clear_all_button" />
+
     <com.android.quickstep.views.SplitPlaceholderView
         android:id="@+id/split_placeholder"
         android:layout_width="match_parent"

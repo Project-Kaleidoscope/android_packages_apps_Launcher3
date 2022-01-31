@@ -562,6 +562,7 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
     // Keeps track of the index where the first TaskView should be
     private int mTaskViewStartIndex = 0;
     private OverviewActionsView mActionsView;
+    private MidClearAllButton mMidClearAllButton;
 
     private MultiWindowModeChangedListener mMultiWindowModeChangedListener =
             new MultiWindowModeChangedListener() {
@@ -771,10 +772,15 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
         updateTaskStackListenerState();
     }
 
-    public void init(OverviewActionsView actionsView, SplitPlaceholderView splitPlaceholderView) {
+    public void init(OverviewActionsView actionsView, SplitPlaceholderView splitPlaceholderView,
+                        MidClearAllButton midClearAllButton) {
+        boolean noTask = getTaskViewCount() == 0;
         mActionsView = actionsView;
-        mActionsView.updateHiddenFlags(HIDDEN_NO_TASKS, getTaskViewCount() == 0);
+        mActionsView.updateHiddenFlags(HIDDEN_NO_TASKS, noTask);
         mSplitPlaceholderView = splitPlaceholderView;
+        mMidClearAllButton = midClearAllButton;
+        midClearAllButton.setOnClickListener(this::dismissAllTasks);
+        midClearAllButton.hide(MidClearAllButton.HIDDEN_NO_TASKS, noTask);
     }
 
     public SplitPlaceholderView getSplitPlaceholder() {
@@ -829,9 +835,11 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
         // taskview for entering split screen, we only pretend to dismiss the task
         if (child instanceof TaskView && child != mSplitHiddenTaskView) {
             TaskView taskView = (TaskView) child;
+            boolean noTask = getTaskViewCount() == 0;
             mHasVisibleTaskData.delete(taskView.getTask().key.id);
             mTaskViewPool.recycle(taskView);
-            mActionsView.updateHiddenFlags(HIDDEN_NO_TASKS, getTaskViewCount() == 0);
+            mActionsView.updateHiddenFlags(HIDDEN_NO_TASKS, noTask);
+            mMidClearAllButton.hide(MidClearAllButton.HIDDEN_NO_TASKS, noTask);
         }
         updateTaskStartIndex(child);
     }
@@ -845,6 +853,7 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
         child.setLayoutDirection(mIsRtl ? View.LAYOUT_DIRECTION_LTR : View.LAYOUT_DIRECTION_RTL);
         updateTaskStartIndex(child);
         mActionsView.updateHiddenFlags(HIDDEN_NO_TASKS, false);
+        mMidClearAllButton.hide(MidClearAllButton.HIDDEN_NO_TASKS, false);
         updateEmptyMessage();
     }
 
@@ -1262,8 +1271,9 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
         mClearAllButton.setFullscreenProgress(fullscreenProgress);
 
         // Fade out the actions view quickly (0.1 range)
-        mActionsView.getFullscreenAlpha().setValue(
-                mapToRange(fullscreenProgress, 0, 0.1f, 1f, 0f, LINEAR));
+        float alpha = mapToRange(fullscreenProgress, 0, 0.1f, 1f, 0f, LINEAR);
+        mActionsView.getFullscreenAlpha().setValue(alpha);
+        mMidClearAllButton.setAlpha(MidClearAllButton.ALPHA_FS_PROGRESS, alpha);
     }
 
     private void updateTaskStackListenerState() {

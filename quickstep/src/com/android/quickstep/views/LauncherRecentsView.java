@@ -81,8 +81,9 @@ public class LauncherRecentsView extends RecentsView<BaseQuickstepLauncher, Laun
     }
 
     @Override
-    public void init(OverviewActionsView actionsView, SplitPlaceholderView splitPlaceholderView) {
-        super.init(actionsView, splitPlaceholderView);
+    public void init(OverviewActionsView actionsView, SplitPlaceholderView splitPlaceholderView,
+                        MidClearAllButton midClearAllButton) {
+        super.init(actionsView, splitPlaceholderView, midClearAllButton);
         setContentAlpha(0);
     }
 

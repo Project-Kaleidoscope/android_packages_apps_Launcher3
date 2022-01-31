@@ -16,6 +16,7 @@
 package com.android.launcher3.uioverrides;
 
 import static com.android.launcher3.LauncherState.CLEAR_ALL_BUTTON;
+import static com.android.launcher3.LauncherState.MID_CLEAR_ALL_BUTTON;
 import static com.android.launcher3.LauncherState.OVERVIEW_ACTIONS;
 import static com.android.launcher3.LauncherState.OVERVIEW_SPLIT_SELECT;
 import static com.android.launcher3.LauncherState.SPLIT_PLACHOLDER_VIEW;
@@ -42,6 +43,7 @@ import com.android.launcher3.states.StateAnimationConfig;
 import com.android.launcher3.util.MultiValueAlpha;
 import com.android.quickstep.views.ClearAllButton;
 import com.android.quickstep.views.LauncherRecentsView;
+import com.android.quickstep.views.MidClearAllButton;
 import com.android.quickstep.views.RecentsView;
 
 /**
@@ -106,6 +108,9 @@ public final class RecentsViewStateController extends
         float clearAllButtonAlpha = state.areElementsVisible(mLauncher, CLEAR_ALL_BUTTON) ? 1 : 0;
         propertySetter.setFloat(mRecentsView.getClearAllButton(), ClearAllButton.VISIBILITY_ALPHA,
                 clearAllButtonAlpha, LINEAR);
+        float midClearAllButtonAlpha = state.areElementsVisible(mLauncher, MID_CLEAR_ALL_BUTTON) ? 1 : 0;
+        propertySetter.setFloat(mLauncher.getMidClearAllButton(), MidClearAllButton.STATE_CTRL_ALPHA,
+                midClearAllButtonAlpha, LINEAR);
         float overviewButtonAlpha = state.areElementsVisible(mLauncher, OVERVIEW_ACTIONS)
                 && mRecentsView.shouldShowOverviewActionsForState(state) ? 1 : 0;
         propertySetter.setFloat(mLauncher.getActionsView().getVisibilityAlpha(),

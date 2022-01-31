@@ -211,6 +211,10 @@ public class DeviceProfile {
     // DragController
     public int flingToDeleteThresholdVelocity;
 
+    // Mid clear all button
+    public int midClearAllMarginGesturePx;
+    public int midClearAllMarginThreeButtonPx;
+
     DeviceProfile(Context context, InvariantDeviceProfile inv, Info info, WindowBounds windowBounds,
             boolean isMultiWindowMode, boolean transposeLayoutWithOrientation,
             boolean useTwoPanels) {
@@ -355,6 +359,11 @@ public class DeviceProfile {
                 R.dimen.overview_actions_bottom_margin_gesture);
         overviewActionsMarginThreeButtonPx = res.getDimensionPixelSize(
                 R.dimen.overview_actions_bottom_margin_three_button);
+
+        midClearAllMarginGesturePx = res.getDimensionPixelSize(
+                R.dimen.mid_clear_all_bottom_margin_gesture);
+        midClearAllMarginThreeButtonPx = res.getDimensionPixelSize(
+                R.dimen.mid_clear_all_bottom_margin_three_button);
 
         // Calculate all of the remaining variables.
         extraSpace = updateAvailableDimensions(res);

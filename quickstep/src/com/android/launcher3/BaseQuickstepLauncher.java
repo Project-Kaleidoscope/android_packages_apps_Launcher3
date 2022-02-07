@@ -70,6 +70,7 @@ import com.android.quickstep.TouchInteractionService.TISBinder;
 import com.android.quickstep.util.RemoteAnimationProvider;
 import com.android.quickstep.util.RemoteFadeOutAnimationListener;
 import com.android.quickstep.util.SplitSelectStateController;
+import com.android.quickstep.views.MemInfoView;
 import com.android.quickstep.views.MidClearAllButton;
 import com.android.quickstep.views.OverviewActionsView;
 import com.android.quickstep.views.RecentsView;
@@ -99,6 +100,7 @@ public abstract class BaseQuickstepLauncher extends Launcher
 
     private OverviewActionsView mActionsView;
     private MidClearAllButton mMidClearAllButton;
+    private MemInfoView mMemInfoView;
 
     private @Nullable TaskbarManager mTaskbarManager;
     private @Nullable OverviewCommandHelper mOverviewCommandHelper;
@@ -163,6 +165,9 @@ public abstract class BaseQuickstepLauncher extends Launcher
         }
         if (mMidClearAllButton != null) {
             mMidClearAllButton.updateVerticalMargin(newMode);
+        }
+        if (mMemInfoView != null) {
+            mMemInfoView.updateVerticalMargin(newMode);
         }
     }
 
@@ -279,15 +284,18 @@ public abstract class BaseQuickstepLauncher extends Launcher
         mActionsView = findViewById(R.id.overview_actions_view);
         mSplitPlaceholderView = findViewById(R.id.split_placeholder);
         mMidClearAllButton = findViewById(R.id.mid_clear_all);
+        mMemInfoView = findViewById(R.id.meminfo);
         RecentsView overviewPanel = (RecentsView) getOverviewPanel();
         mSplitPlaceholderView.init(
                 new SplitSelectStateController(mHandler, SystemUiProxy.INSTANCE.get(this))
         );
-        overviewPanel.init(mActionsView, mSplitPlaceholderView, mMidClearAllButton);
+        overviewPanel.init(mActionsView, mSplitPlaceholderView, mMidClearAllButton, mMemInfoView);
         mActionsView.setDp(getDeviceProfile());
         mMidClearAllButton.setDp(getDeviceProfile());
+        mMemInfoView.setDp(getDeviceProfile());
         mActionsView.updateVerticalMargin(SysUINavigationMode.getMode(this));
         mMidClearAllButton.updateVerticalMargin(SysUINavigationMode.getMode(this));
+        mMemInfoView.updateVerticalMargin(SysUINavigationMode.getMode(this));
 
         mAppTransitionManager = new QuickstepTransitionManager(this);
         mAppTransitionManager.registerRemoteAnimations();
@@ -306,6 +314,10 @@ public abstract class BaseQuickstepLauncher extends Launcher
 
     public MidClearAllButton getMidClearAllButton () {
         return mMidClearAllButton;
+    }
+
+    public MemInfoView getMemInfoView () {
+        return mMemInfoView;
     }
 
     public SplitPlaceholderView getSplitPlaceholderView() {

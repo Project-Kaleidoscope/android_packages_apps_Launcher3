@@ -17,4 +17,8 @@
 
     <string name="kscope_shortcut_uninstall_title">Uninstall</string>
 
+     <!-- Memory info -->
+     <string name="meminfo_available">Available</string>
+     <string name="meminfo_total">Total</string>
+
 </resources>

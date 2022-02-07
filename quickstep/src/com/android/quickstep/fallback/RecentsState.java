@@ -41,13 +41,14 @@ public class RecentsState implements BaseState<RecentsState> {
     private static final int FLAG_SCRIM = BaseState.getFlag(5);
     private static final int FLAG_LIVE_TILE = BaseState.getFlag(6);
     private static final int FLAG_MID_CLEAR_ALL_BUTTON = BaseState.getFlag(7);
+    private static final int FLAG_MEMINFO = BaseState.getFlag(8);
 
     public static final RecentsState DEFAULT = new RecentsState(0,
             FLAG_MID_CLEAR_ALL_BUTTON | FLAG_OVERVIEW_ACTIONS | FLAG_SHOW_AS_GRID | FLAG_SCRIM
-                    | FLAG_LIVE_TILE);
+                    | FLAG_LIVE_TILE | FLAG_MEMINFO);
     public static final RecentsState MODAL_TASK = new ModalState(1,
             FLAG_DISABLE_RESTORE | FLAG_MID_CLEAR_ALL_BUTTON | FLAG_OVERVIEW_ACTIONS | FLAG_MODAL
-                    | FLAG_SHOW_AS_GRID | FLAG_SCRIM | FLAG_LIVE_TILE);
+                    | FLAG_SHOW_AS_GRID | FLAG_SCRIM | FLAG_LIVE_TILE | FLAG_MEMINFO);
     public static final RecentsState BACKGROUND_APP = new BackgroundAppState(2,
             FLAG_DISABLE_RESTORE | FLAG_NON_INTERACTIVE | FLAG_FULL_SCREEN);
     public static final RecentsState HOME = new RecentsState(3, 0);
@@ -116,6 +117,13 @@ public class RecentsState implements BaseState<RecentsState> {
      */
     public boolean hasMidClearAll() {
         return hasFlag(FLAG_MID_CLEAR_ALL_BUTTON);
+    }
+
+    /**
+     * For this state, whether mid clear button should be shown.
+     */
+    public boolean hasMemInfoView() {
+        return hasFlag(FLAG_MEMINFO);
     }
 
     /**

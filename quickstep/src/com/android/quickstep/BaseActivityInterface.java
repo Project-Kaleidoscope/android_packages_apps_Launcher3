@@ -236,8 +236,10 @@ public abstract class BaseActivityInterface<STATE_TYPE extends BaseState<STATE_T
                         + res.getDimensionPixelSize(R.dimen.overview_proactive_row_bottom_margin);
             }
             calculateTaskSizeInternal(context, dp,
-                    dp.overviewTaskThumbnailTopMarginPx,
-                    proactiveRowAndMargin + getOverviewActionsHeight(context, dp),
+                    dp.overviewTaskThumbnailTopMarginPx
+                    + res.getDimensionPixelSize(R.dimen.overview_task_extra_top_margin),
+                    proactiveRowAndMargin + getOverviewActionsHeight(context, dp)
+                    + res.getDimensionPixelSize(R.dimen.overview_task_extra_bottom_margin),
                     res.getDimensionPixelSize(R.dimen.overview_minimum_next_prev_size) + taskMargin,
                     outRect);
         }

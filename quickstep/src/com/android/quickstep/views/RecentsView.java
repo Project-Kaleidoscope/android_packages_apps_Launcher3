@@ -3911,7 +3911,7 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
 
         boolean isInLandscape = mOrientationState.getTouchRotation() != ROTATION_0
                                 && mOrientationState.getTouchRotation() != ROTATION_180;
-        int childCount = getChildCount();
+        int childCount = mPageScrolls.length;
         int curScroll = isInLandscape ? getScrollY() : getScrollX();
 
         for (int i = 0; i < childCount; i++) {

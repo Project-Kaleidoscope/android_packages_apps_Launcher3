@@ -4,10 +4,12 @@ import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCH
 import static com.android.launcher3.logging.StatsLogManager.LauncherEvent.LAUNCHER_SYSTEM_SHORTCUT_WIDGETS_TAP;
 
 import android.app.ActivityOptions;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.ImageView;
@@ -27,6 +29,7 @@ import com.android.launcher3.util.PackageManagerHelper;
 import com.android.launcher3.util.PackageUserKey;
 import com.android.launcher3.widget.WidgetsBottomSheet;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -162,9 +165,20 @@ public abstract class SystemShortcut<T extends BaseDraggingActivity> extends Ite
         @Override
         public void onClick(View view) {
             dismissTaskMenuView(mTarget);
-            Uri uri = Uri.fromParts("package", mItemInfo.getTargetComponent().getPackageName(), null);
-            Intent intent = new Intent(Intent.ACTION_DELETE, uri);
-            mTarget.startActivitySafely(view, intent, mItemInfo);
+            ComponentName targetComponent = mItemInfo.getTargetComponent();
+            try {
+                Intent intent = Intent.parseUri(
+                                    mTarget.getString(R.string.delete_package_intent), 0)
+                        .setData(Uri.fromParts("package",
+                                    targetComponent.getPackageName(),
+                                    targetComponent.getClassName()))
+                        .putExtra(Intent.EXTRA_USER, mItemInfo.user);
+                mTarget.startActivitySafely(view, intent, mItemInfo);
+            } catch (URISyntaxException e) {
+                Log.e(getClass().getSimpleName(),
+                        "Failed to parse intent to start uninstall activity for item="
+                        + mItemInfo);
+            }
         }
     }
 

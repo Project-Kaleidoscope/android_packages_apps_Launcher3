@@ -692,7 +692,10 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
 
         mClearAllButton = (ClearAllButton) LayoutInflater.from(context)
                 .inflate(R.layout.overview_clear_all_button, this, false);
-        mClearAllButton.setOnClickListener(this::dismissAllTasks);
+        mClearAllButton.setOnClickListener(view -> {
+            mClearAllButton.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+            dismissAllTasks(this);
+        });
         mTaskViewPool = new ViewPool<>(context, this, R.layout.task, 20 /* max size */,
                 10 /* initial size */);
         mGroupedTaskViewPool = new ViewPool<>(context, this,
@@ -873,7 +876,10 @@ public abstract class RecentsView<ACTIVITY_TYPE extends StatefulActivity<STATE_T
         mSplitSelectStateController = splitController;
         mMidClearAllButton = midClearAllButton;
         mMemInfoView = memInfoView;
-        midClearAllButton.setOnClickListener(this::dismissAllTasks);
+        midClearAllButton.setOnClickListener(view -> {
+            midClearAllButton.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+            dismissAllTasks(this);
+        });
         midClearAllButton.hide(MidClearAllButton.HIDDEN_NO_TASKS, getTaskViewCount() == 0);
     }
 

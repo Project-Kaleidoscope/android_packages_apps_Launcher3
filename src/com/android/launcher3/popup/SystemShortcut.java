@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import com.android.launcher3.AbstractFloatingView;
 import com.android.launcher3.BaseDraggingActivity;
 import com.android.launcher3.Launcher;
+import com.android.launcher3.LauncherSettings.Favorites;
 import com.android.launcher3.R;
 import com.android.launcher3.Utilities;
 import com.android.launcher3.model.WidgetItem;
@@ -142,10 +143,9 @@ public abstract class SystemShortcut<T extends Context & ActivityContext> extend
     public static final Factory<Launcher> UNINSTALL = (activity, itemInfo) -> {
         if (itemInfo.getTargetComponent() == null) return null;
         Intent intent = new Intent().setComponent(itemInfo.getTargetComponent());
-        if (PackageManagerHelper.isSystemApp(activity, intent)) {
-            return null;
-        }
-        return new Uninstall(activity, itemInfo);
+        return PackageManagerHelper.isSystemApp(activity, intent) ||
+                itemInfo.itemType == Favorites.ITEM_TYPE_DEEP_SHORTCUT
+                ? null : new Uninstall(activity, itemInfo);
     };
 
     public static class Uninstall extends SystemShortcut<Launcher> {

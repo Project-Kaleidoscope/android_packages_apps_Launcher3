@@ -294,11 +294,6 @@ public class InvariantDeviceProfile {
         return displayOption.grid.name;
     }
 
-    public static float adaptDimensionByDensity(Context context, float f) {
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        return f * metrics.widthPixels / 360 / metrics.density;
-    }
-
     private void initGrid(Context context, Info displayInfo, DisplayOption displayOption,
             @DeviceType int deviceType) {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -770,113 +765,104 @@ public class InvariantDeviceProfile {
 
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ProfileDisplayOption);
 
-            minWidthDps = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_minWidthDps, 0));
-            minHeightDps = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_minHeightDps, 0));
+            minWidthDps = a.getFloat(R.styleable.ProfileDisplayOption_minWidthDps, 0);
+            minHeightDps = a.getFloat(R.styleable.ProfileDisplayOption_minHeightDps, 0);
 
             canBeDefault = a.getBoolean(R.styleable.ProfileDisplayOption_canBeDefault, false);
 
             float x;
             float y;
 
-            x = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_minCellWidthDps, 0));
-            y = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_minCellHeightDps, 0));
+            x = a.getFloat(R.styleable.ProfileDisplayOption_minCellWidthDps, 0);
+            y = a.getFloat(R.styleable.ProfileDisplayOption_minCellHeightDps, 0);
             minCellSize[INDEX_DEFAULT] = new PointF(x, y);
             minCellSize[INDEX_LANDSCAPE] = new PointF(x, y);
             minCellSize[INDEX_ALL_APPS] = new PointF(x, y);
 
-            x = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_twoPanelPortraitMinCellWidthDps,
-                    minCellSize[INDEX_DEFAULT].x));
-            y = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_twoPanelPortraitMinCellHeightDps,
-                    minCellSize[INDEX_DEFAULT].y));
+            x = a.getFloat(R.styleable.ProfileDisplayOption_twoPanelPortraitMinCellWidthDps,
+                    minCellSize[INDEX_DEFAULT].x);
+            y = a.getFloat(R.styleable.ProfileDisplayOption_twoPanelPortraitMinCellHeightDps,
+                    minCellSize[INDEX_DEFAULT].y);
             minCellSize[INDEX_TWO_PANEL_PORTRAIT] = new PointF(x, y);
 
-            x = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_twoPanelLandscapeMinCellWidthDps,
-                    minCellSize[INDEX_DEFAULT].x));
-            y = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_twoPanelLandscapeMinCellHeightDps,
-                    minCellSize[INDEX_DEFAULT].y));
+            x = a.getFloat(R.styleable.ProfileDisplayOption_twoPanelLandscapeMinCellWidthDps,
+                    minCellSize[INDEX_DEFAULT].x);
+            y = a.getFloat(R.styleable.ProfileDisplayOption_twoPanelLandscapeMinCellHeightDps,
+                    minCellSize[INDEX_DEFAULT].y);
             minCellSize[INDEX_TWO_PANEL_LANDSCAPE] = new PointF(x, y);
 
-            float borderSpace = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_borderSpaceDps, 0));
-            float twoPanelPortraitBorderSpaceDps = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_twoPanelPortraitBorderSpaceDps, borderSpace));
-            float twoPanelLandscapeBorderSpaceDps = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_twoPanelLandscapeBorderSpaceDps, borderSpace));
+            float borderSpace = a.getFloat(R.styleable.ProfileDisplayOption_borderSpaceDps, 0);
+            float twoPanelPortraitBorderSpaceDps = a.getFloat(
+                    R.styleable.ProfileDisplayOption_twoPanelPortraitBorderSpaceDps, borderSpace);
+            float twoPanelLandscapeBorderSpaceDps = a.getFloat(
+                    R.styleable.ProfileDisplayOption_twoPanelLandscapeBorderSpaceDps, borderSpace);
 
-            x = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_borderSpaceHorizontalDps, borderSpace));
-            y = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_borderSpaceVerticalDps, borderSpace));
+            x = a.getFloat(R.styleable.ProfileDisplayOption_borderSpaceHorizontalDps, borderSpace);
+            y = a.getFloat(R.styleable.ProfileDisplayOption_borderSpaceVerticalDps, borderSpace);
             borderSpaces[INDEX_DEFAULT] = new PointF(x, y);
             borderSpaces[INDEX_LANDSCAPE] = new PointF(x, y);
 
-            x = adaptDimensionByDensity(context, a.getFloat(
+            x = a.getFloat(
                     R.styleable.ProfileDisplayOption_twoPanelPortraitBorderSpaceHorizontalDps,
-                    twoPanelPortraitBorderSpaceDps));
-            y = adaptDimensionByDensity(context, a.getFloat(
+                    twoPanelPortraitBorderSpaceDps);
+            y = a.getFloat(
                     R.styleable.ProfileDisplayOption_twoPanelPortraitBorderSpaceVerticalDps,
-                    twoPanelPortraitBorderSpaceDps));
+                    twoPanelPortraitBorderSpaceDps);
             borderSpaces[INDEX_TWO_PANEL_PORTRAIT] = new PointF(x, y);
 
-            x = adaptDimensionByDensity(context, a.getFloat(
+            x = a.getFloat(
                     R.styleable.ProfileDisplayOption_twoPanelLandscapeBorderSpaceHorizontalDps,
-                    twoPanelLandscapeBorderSpaceDps));
-            y = adaptDimensionByDensity(context, a.getFloat(
+                    twoPanelLandscapeBorderSpaceDps);
+            y = a.getFloat(
                     R.styleable.ProfileDisplayOption_twoPanelLandscapeBorderSpaceVerticalDps,
-                    twoPanelLandscapeBorderSpaceDps));
+                    twoPanelLandscapeBorderSpaceDps);
             borderSpaces[INDEX_TWO_PANEL_LANDSCAPE] = new PointF(x, y);
 
-            x = y = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_allAppsCellSpacingDps, borderSpace));
+            x = y = a.getFloat(R.styleable.ProfileDisplayOption_allAppsCellSpacingDps,
+                    borderSpace);
             borderSpaces[INDEX_ALL_APPS] = new PointF(x, y);
             folderBorderSpace = borderSpace;
 
-            iconSizes[INDEX_DEFAULT] = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_iconImageSize, 0));
-            iconSizes[INDEX_LANDSCAPE] = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_landscapeIconSize,
-                    iconSizes[INDEX_DEFAULT]));
-            iconSizes[INDEX_ALL_APPS] = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_allAppsIconSize,
-                    iconSizes[INDEX_DEFAULT]));
-            iconSizes[INDEX_TWO_PANEL_PORTRAIT] = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_twoPanelPortraitIconSize,
-                    iconSizes[INDEX_DEFAULT]));
-            iconSizes[INDEX_TWO_PANEL_LANDSCAPE] = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_twoPanelLandscapeIconSize,
-                    iconSizes[INDEX_DEFAULT]));
+            iconSizes[INDEX_DEFAULT] =
+                    a.getFloat(R.styleable.ProfileDisplayOption_iconImageSize, 0);
+            iconSizes[INDEX_LANDSCAPE] =
+                    a.getFloat(R.styleable.ProfileDisplayOption_landscapeIconSize,
+                            iconSizes[INDEX_DEFAULT]);
+            iconSizes[INDEX_ALL_APPS] =
+                    a.getFloat(R.styleable.ProfileDisplayOption_allAppsIconSize,
+                            iconSizes[INDEX_DEFAULT]);
+            iconSizes[INDEX_TWO_PANEL_PORTRAIT] =
+                    a.getFloat(R.styleable.ProfileDisplayOption_twoPanelPortraitIconSize,
+                            iconSizes[INDEX_DEFAULT]);
+            iconSizes[INDEX_TWO_PANEL_LANDSCAPE] =
+                    a.getFloat(R.styleable.ProfileDisplayOption_twoPanelLandscapeIconSize,
+                            iconSizes[INDEX_DEFAULT]);
 
-            textSizes[INDEX_DEFAULT] = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_iconTextSize, 0));
-            textSizes[INDEX_LANDSCAPE] = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_landscapeIconTextSize, textSizes[INDEX_DEFAULT]));
-            textSizes[INDEX_ALL_APPS] = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_allAppsIconTextSize, textSizes[INDEX_DEFAULT]));
-            textSizes[INDEX_TWO_PANEL_PORTRAIT] = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_twoPanelPortraitIconTextSize,
-                            textSizes[INDEX_DEFAULT]));
-            textSizes[INDEX_TWO_PANEL_LANDSCAPE] = adaptDimensionByDensity(context,a.getFloat(
-                    R.styleable.ProfileDisplayOption_twoPanelLandscapeIconTextSize,
-                            textSizes[INDEX_DEFAULT]));
+            textSizes[INDEX_DEFAULT] =
+                    a.getFloat(R.styleable.ProfileDisplayOption_iconTextSize, 0);
+            textSizes[INDEX_LANDSCAPE] =
+                    a.getFloat(R.styleable.ProfileDisplayOption_landscapeIconTextSize,
+                            textSizes[INDEX_DEFAULT]);
+            textSizes[INDEX_ALL_APPS] =
+                    a.getFloat(R.styleable.ProfileDisplayOption_allAppsIconTextSize,
+                            textSizes[INDEX_DEFAULT]);
+            textSizes[INDEX_TWO_PANEL_PORTRAIT] =
+                    a.getFloat(R.styleable.ProfileDisplayOption_twoPanelPortraitIconTextSize,
+                            textSizes[INDEX_DEFAULT]);
+            textSizes[INDEX_TWO_PANEL_LANDSCAPE] =
+                    a.getFloat(R.styleable.ProfileDisplayOption_twoPanelLandscapeIconTextSize,
+                            textSizes[INDEX_DEFAULT]);
 
-            horizontalMargin[INDEX_DEFAULT] = adaptDimensionByDensity(context, a.getFloat(
-                    R.styleable.ProfileDisplayOption_horizontalMargin, 0));
+            horizontalMargin[INDEX_DEFAULT] = a.getFloat(
+                    R.styleable.ProfileDisplayOption_horizontalMargin, 0);
             horizontalMargin[INDEX_LANDSCAPE] = horizontalMargin[INDEX_DEFAULT];
             horizontalMargin[INDEX_ALL_APPS] = horizontalMargin[INDEX_DEFAULT];
-            horizontalMargin[INDEX_TWO_PANEL_LANDSCAPE] = adaptDimensionByDensity(context,
-                    a.getFloat(R.styleable.ProfileDisplayOption_twoPanelLandscapeHorizontalMargin,
-                            horizontalMargin[INDEX_DEFAULT]));
-            horizontalMargin[INDEX_TWO_PANEL_PORTRAIT] = adaptDimensionByDensity(context,
-                    a.getFloat(R.styleable.ProfileDisplayOption_twoPanelPortraitHorizontalMargin,
-                            horizontalMargin[INDEX_DEFAULT]));
+            horizontalMargin[INDEX_TWO_PANEL_LANDSCAPE] = a.getFloat(
+                    R.styleable.ProfileDisplayOption_twoPanelLandscapeHorizontalMargin,
+                    horizontalMargin[INDEX_DEFAULT]);
+            horizontalMargin[INDEX_TWO_PANEL_PORTRAIT] = a.getFloat(
+                    R.styleable.ProfileDisplayOption_twoPanelPortraitHorizontalMargin,
+                    horizontalMargin[INDEX_DEFAULT]);
 
             a.recycle();
         }

@@ -70,6 +70,8 @@ import com.android.launcher3.views.ScrimView;
 import com.android.launcher3.views.SpringRelativeLayout;
 import com.android.launcher3.workprofile.PersonalWorkSlidingTabStrip.OnActivePageChangedListener;
 
+import ink.kaleidoscope.ParallelSpaceManager;
+
 /**
  * The all apps view container.
  */
@@ -87,8 +89,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
     protected final BaseDraggingActivity mLauncher;
     protected final AdapterHolder[] mAH;
-    protected final ItemInfoMatcher mPersonalMatcher = ItemInfoMatcher.ofUser(
-            Process.myUserHandle());
+    protected ItemInfoMatcher mPersonalMatcher;
     private final AllAppsStore mAllAppsStore = new AllAppsStore();
 
     private final RecyclerView.OnScrollListener mScrollListener =
@@ -154,6 +155,7 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
 
         mWorkManager = new WorkProfileManager(mLauncher.getSystemService(UserManager.class), this,
                 Utilities.getPrefs(mLauncher));
+        updateMatcher();
         mAH[AdapterHolder.MAIN] = new AdapterHolder(false /* isWork */);
         mAH[AdapterHolder.WORK] = new AdapterHolder(true /* isWork */);
 
@@ -226,7 +228,15 @@ public class AllAppsContainerView extends SpringRelativeLayout implements DragSo
         }
     }
 
+    private void updateMatcher() {
+        mPersonalMatcher = ItemInfoMatcher.ofUser(
+                Process.myUserHandle()).or(ItemInfoMatcher.ofUsers(
+                    ParallelSpaceManager.getInstance().getParallelUserHandles()));
+        mWorkManager.updateMatcher();
+    }
+
     private void onAppsUpdated() {
+        updateMatcher();
         boolean hasWorkApps = false;
         for (AppInfo app : mAllAppsStore.getApps()) {
             if (mWorkManager.getMatcher().matches(app, null)) {
